@@ -1,4 +1,4 @@
-package com.login;
+package ir.ac.aut.internet;
 
 import com.facebook.react.ReactActivity;
 
