@@ -165,19 +165,29 @@ export default class App extends React.Component {
 
     if (this.state.isLoggedIn) {
       return  (
-      <ImageBackground style={styles.container}  source={require("./assets/background.png")}>
-        <Text style={styles.font}>شما وارد اکانت اینترنت خود شدید</Text>
-        <TouchableOpacity 
-            onPress={() => this._handleLogoutPress()}
-            style={{marginBottom: 30}}
-        >
-        <ImageBackground style={[styles.button, {marginTop: 30}]} source={require("./assets/logout.png")}>
-        <Text style={styles.font}>
-          خروج
+      <View style={{flex: 1, }}>
+        <View style={{backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
+        <Text style={[styles.font, {alignItems: 'center',justifyContent: 'center', fontSize: 10}]}>
+          توسعه دهنده: علی دقیقی
         </Text>
+        <Text style={[styles.font, {alignItems: 'center',justifyContent: 'center',}]}>
+          https://github.com/authq/aut-login-app
+        </Text>
+        </View>
+        <ImageBackground style={styles.container}  source={require("./assets/background.png")}>
+          <Text style={styles.font}>شما وارد اکانت اینترنت خود شدید</Text>
+          <TouchableOpacity 
+              onPress={() => this._handleLogoutPress()}
+              style={{marginBottom: 30}}
+          >
+          <ImageBackground style={[styles.button, {marginTop: 30}]} source={require("./assets/logout.png")}>
+          <Text style={styles.font}>
+            خروج
+          </Text>
+          </ImageBackground>
+          </TouchableOpacity>
         </ImageBackground>
-        </TouchableOpacity>
-      </ImageBackground>
+      </View>
       )
     }
 
