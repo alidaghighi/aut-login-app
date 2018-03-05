@@ -21,3 +21,6 @@ build
 
 # gradle
 .gradle
+
+# vscode
+.vscode
