@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  ActivityIndicator,
+  AppState
 } from 'react-native';
 
 import axios from 'axios';
@@ -31,6 +33,7 @@ export default class App extends React.Component {
       secretValue: '',
       isLoggedIn: false,
       loading: false,
+      appState: AppState.currentState
     };
   }
 
@@ -76,16 +79,17 @@ export default class App extends React.Component {
       const username = this.state.nameValue;
       const password = this.state.secretValue;
 
-      const login = await doLogin(username, password);
-      if (login) {}
-      else {
-        Alert.alert("Logout failed!")
-      }
+      await doLogin(username, password);
 
+      await this.checkLogin();
+   
+
+      if (this.state.isLoggedIn){
       await this.storeUsername(username);
       await this.storePassword(password);
-      this.setState({ isLoggedIn: login });
-
+      } else {
+        Alert.alert('خطا هنگام ورود‍')
+      }
     }
     catch (e) {
       console.log(e + '');
@@ -101,10 +105,7 @@ export default class App extends React.Component {
       this.setState({isLoading: false});
 
       if (logout) {
-        Alert.alert("Logout failed!");
-      }
-      else {
-        Alert.alert("Logout successfull!");
+        Alert.alert("خروج شما انجام نشد :)");
       }
 
     }
@@ -112,6 +113,8 @@ export default class App extends React.Component {
       console.log(e + '');
     }
   };
+
+  
   async componentWillMount() {
     const user = await this.getUsername();
     const pass = await this.getPassword();
@@ -119,39 +122,73 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    await this.checkLogin();
+  }
+
+  async checkLogin() {
+    this.setState({isLoading: true});
     const success = await checkLogin();
-    this.setState({ isLoggedIn: success });
+    this.setState({ isLoggedIn: success, isLoading: false });
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = async (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      // App has come to the foreground!
+      await this.checkLogin();
+    }
+    this.setState({appState: nextAppState});
   }
 
   render(state) {
 
+    if (this.state.isLoading) {
+      return <ImageBackground style={styles.container}  source={require("./assets/background.png")}>
+       <ActivityIndicator size="large" color="#007269" />
+       <TouchableOpacity 
+            onPress={() => this.setState({ isLoading: false })}
+            style={{marginBottom: 30}}
+        >
+        <ImageBackground style={[styles.button, {marginTop: 30}]} source={require("./assets/logout.png")}>
+        <Text style={styles.font}>
+           انصراف 
+        </Text>
+        </ImageBackground>
+        </TouchableOpacity>
+      </ImageBackground>
+
+    }
 
     if (this.state.isLoggedIn) {
       return  (
-      <View style={styles.container}>
-        <Text>سلام خوش آمدید.</Text>
+      <ImageBackground style={styles.container}  source={require("./assets/background.png")}>
+        <Text style={styles.font}>شما وارد اکانت اینترنت خود شدید</Text>
         <TouchableOpacity 
             onPress={() => this._handleLogoutPress()}
             style={{marginBottom: 30}}
         >
         <ImageBackground style={[styles.button, {marginTop: 30}]} source={require("./assets/logout.png")}>
-        <Text>
+        <Text style={styles.font}>
           خروج
         </Text>
         </ImageBackground>
         </TouchableOpacity>
-      </View>
+      </ImageBackground>
       )
     }
 
     else {
 
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center',}}>
+      <ImageBackground style={{flex: 1, alignItems: 'center', justifyContent: 'center', }}  source={require("./assets/background.png")}>
           <TextInput
             value={this.state.nameValue}
             onChangeText={this._handleNameChange}
-            style={{ width: 200, height: 44, padding: 8, textAlign :'center', marginBottom:10 }}
+            style={{ width: 200, height: 44, padding: 8, textAlign :'center', marginBottom:10, fontFamily: 'IRANSansMobile' }}
             placeholder= 'ایمیل'
             placeholderTextColo='#bababa'
           />
@@ -168,15 +205,11 @@ export default class App extends React.Component {
             <TouchableOpacity style={styles.button}
 						  onPress={() => this._handleLoginPress()}
 						  activeOpacity={1} >
-              {this.state.isLoading ?
-                <Image style={{flex:1}} source={require("./assets/loading3.gif")}/>
-                :
                 <ImageBackground style={styles.button} source={require("./assets/login.png")}>
-								<Text>ورود</Text>
+								  <Text style={styles.font}>ورود</Text>
                 </ImageBackground>
-							}
 					</TouchableOpacity>
-      </View>
+          </ImageBackground>
     );
     }
   }
@@ -195,6 +228,9 @@ const styles = StyleSheet.create({
     zIndex: 100,
     height: 37.5,
     width: 75,
+  },
+  font: {
+    fontFamily: 'IRANSansMobile',
   }
 });
 
