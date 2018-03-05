@@ -1,0 +1,5 @@
+{
+    "http.proxy": "https://ssl.gates.ga/pac",
+    "http.proxyAuthorization": null,
+    "http.proxyStrictSSL": true,
+}
