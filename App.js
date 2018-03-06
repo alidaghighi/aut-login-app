@@ -36,7 +36,14 @@ export default class App extends React.Component {
       appState: AppState.currentState
     };
   }
-
+  fixingLoginForm(username) {
+    if (username.includes('@aut.ac.ir')) {
+      return username.substring(0, username.indexOf('@aut.ac.ir'));
+    }
+    else{
+      return username;
+    }
+  }
   async storeUsername(username) {
       await AsyncStorage.setItem('username', username);
   }
@@ -76,11 +83,11 @@ export default class App extends React.Component {
   _handleLoginPress = async () => {
     this.setState({isLoading: true});
     try {
-      const username = this.state.nameValue;
+      const username = this.state.nameValue.toLowerCase();
       const password = this.state.secretValue;
-
+      username = this.fixingLoginForm(username);
       await doLogin(username, password);
-
+      
       await this.checkLogin();
    
 
