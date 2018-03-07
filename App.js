@@ -38,10 +38,10 @@ export default class App extends React.Component {
   }
   fixingLoginForm(username) {
     if (username.includes('@aut.ac.ir')) {
-      return username.substring(0, username.indexOf('@aut.ac.ir'));
+      return (username.substring(0, username.indexOf('@aut.ac.ir'))).toLowerCase();
     }
     else{
-      return username;
+      return username.toLowerCase();
     }
   }
   async storeUsername(username) {
@@ -83,7 +83,7 @@ export default class App extends React.Component {
   _handleLoginPress = async () => {
     this.setState({isLoading: true});
     try {
-      const username = this.state.nameValue.toLowerCase();
+      const username = this.state.nameValue;
       const password = this.state.secretValue;
       username = this.fixingLoginForm(username);
       await doLogin(username, password);
