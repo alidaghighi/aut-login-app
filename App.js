@@ -175,7 +175,7 @@ export default class App extends React.Component {
       <View style={{flex: 1, }}>
         <View style={{backgroundColor: '#fff',alignItems: 'center',justifyContent: 'center',}}>
         <Text style={[styles.font, {alignItems: 'center',justifyContent: 'center', fontSize: 10}]}>
-          توسعه دهنده: علی دقیقی
+        https://github.com/daghighi1376
         </Text>
         <Text style={[styles.font, {alignItems: 'center',justifyContent: 'center',}]}>
           https://github.com/authq/aut-login-app
