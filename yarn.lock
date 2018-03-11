@@ -118,6 +118,12 @@ appcenter-link-scripts@1.4.0:
     which "^1.2.11"
     xcode "^0.8.9"
 
+appcenter-push@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/appcenter-push/-/appcenter-push-1.4.0.tgz#5bc0f34fef8549d93772629e4b57b7c8d2f987d9"
+  dependencies:
+    appcenter "1.4.0"
+
 appcenter@1.4.0, appcenter@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-1.4.0.tgz#dd5215c0985e3ee02935a03a0b33fa04338a45b0"
